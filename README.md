@@ -17,7 +17,7 @@ samples, guidance on mobile development, and a full API reference.
 
 #screenshots
 
-|Splash Screen           |   Home Screen             |  Movie Details Screen              
+|  Splash Screen           |   Home Screen             |  Movie Details Screen              
 ------------------------:|:-------------------------:|:-------------------------:
 ![splash](https://user-images.githubusercontent.com/76426940/219970687-d4c8ff9b-f28e-4974-b656-e43019235810.jpg)|![home](https://user-images.githubusercontent.com/76426940/219970760-a03ae3e6-3dec-45d4-bbe6-772d4cc76179.jpg)|![details](https://user-images.githubusercontent.com/76426940/219970776-c0336b04-ce76-4d2e-a036-86c5a3cfb64f.jpg)
 
