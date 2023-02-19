@@ -10,6 +10,7 @@ import '../../shared/styles/icon_broken.dart';
 
 class HomeScreen extends StatelessWidget {
   int movieIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppStates>(
@@ -24,11 +25,13 @@ class HomeScreen extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     navigateTo(
-                        context,
-                        MoviesDetailsScreen(
-                          title: cubit.popularMoviesModel?.results![0].title ??
-                              " ",
-                        ));
+                      context,
+                      MoviesDetailsScreen(
+                        title:
+                            cubit.popularMoviesModel?.results![0].title ?? " ",
+                        id: cubit.popularMoviesModel?.results![0].id ?? 0,
+                      ),
+                    );
                   },
                   child: SizedBox(
                     height: 300,
@@ -36,8 +39,18 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 GestureDetector(
-                  onTap: (){
-                    navigateTo(context, MoviesDetailsScreen(title: cubit.popularMoviesModel?.results![movieIndex].title ?? " "));
+                  onTap: () {
+                    print('new release index -> $movieIndex');
+                    navigateTo(
+                      context,
+                      MoviesDetailsScreen(
+                        title: cubit.popularMoviesModel?.results![movieIndex]
+                                .title ??
+                            " ",
+                        id: cubit.popularMoviesModel?.results![movieIndex].id ??
+                            0,
+                      ),
+                    );
                   },
                   child: Container(
                     height: 200.0,
@@ -51,8 +64,17 @@ class HomeScreen extends StatelessWidget {
                   height: 10.0,
                 ),
                 GestureDetector(
-                  onTap: (){
-                    navigateTo(context, MoviesDetailsScreen(title: cubit.topRatedMoviesModel?.results![movieIndex].title ?? " "));
+                  onTap: () {
+                    print('recommanded index -> $movieIndex');
+                    navigateTo(
+                      context,
+                      MoviesDetailsScreen(
+                        title: cubit.topRatedMoviesModel?.results![movieIndex]
+                                .title ??
+                            " ",
+                        id: cubit.topRatedMoviesModel?.results![movieIndex].id ?? 0,
+                      ),
+                    );
                   },
                   child: Container(
                     height: 300,
@@ -167,6 +189,7 @@ class HomeScreen extends StatelessWidget {
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
+                movieIndex = index;
                 return ConditionalBuilder(
                   condition: cubit.popularMoviesModel?.results != null,
                   builder: (context) => buildMovieItem(
@@ -209,7 +232,7 @@ class HomeScreen extends StatelessWidget {
           ),
           Expanded(
             child: ListView.separated(
-              shrinkWrap: true,
+              //shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 movieIndex = index;

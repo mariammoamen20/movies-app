@@ -64,7 +64,7 @@ class AppCubit extends Cubit<AppStates> {
         'api_key': API_KEY,
       },
     ).then((value) {
-      print('popular data ${value.data}');
+     // print('popular data ${value.data}');
       popularMoviesModel = PopularMovieModel.fromJson(value.data);
       emit(PopularMovieSuccessState());
     }).catchError((error) {
@@ -84,7 +84,7 @@ class AppCubit extends Cubit<AppStates> {
     ).then(
           (value) {
         topRatedMoviesModel = TopRatedMoviesModel.fromJson(value.data);
-        print('top rated ${value.data}');
+        //print('top rated ${value.data}');
         emit(TopRatedSuccessState());
       },
     ).catchError((error) {

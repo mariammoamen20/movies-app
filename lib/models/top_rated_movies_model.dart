@@ -5,7 +5,7 @@ class TopRatedMoviesModel {
     page = json['page'];
     json['results'].forEach((elements){
       results?.add(TopRatedResults.fromJson(elements));
-      print('elements $elements');
+      //print('elements $elements');
     });
   }
 }

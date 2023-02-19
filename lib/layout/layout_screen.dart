@@ -7,21 +7,24 @@ class LayoutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AppCubit, AppStates>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        var cubit = AppCubit.get(context);
-        return Scaffold(
-          bottomNavigationBar: BottomNavigationBar(
-            currentIndex: cubit.currentIndex,
-            onTap: (index){
-              cubit.changeBottomNav(index);
-            },
-            items: cubit.bottoms,
-          ),
-          body: cubit.screen[cubit.currentIndex],
-        );
-      },
+    return BlocProvider(
+      create: (context) => AppCubit()..getPopularMovie()..getTopRated(),
+      child: BlocConsumer<AppCubit, AppStates>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          var cubit = AppCubit.get(context);
+          return Scaffold(
+            bottomNavigationBar: BottomNavigationBar(
+              currentIndex: cubit.currentIndex,
+              onTap: (index) {
+                cubit.changeBottomNav(index);
+              },
+              items: cubit.bottoms,
+            ),
+            body: cubit.screen[cubit.currentIndex],
+          );
+        },
+      ),
     );
   }
 }

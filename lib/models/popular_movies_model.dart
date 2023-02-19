@@ -5,7 +5,7 @@ class PopularMovieModel {
     page = json['page'];
     json['results'].forEach((elements){
       results?.add(Results.fromJson(elements));
-      print('elements $elements');
+     // print('elements $elements');
     });
   }
 }
