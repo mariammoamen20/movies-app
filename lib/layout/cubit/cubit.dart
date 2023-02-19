@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
@@ -92,5 +93,20 @@ class AppCubit extends Cubit<AppStates> {
       emit(TopRatedErrorState(error.toString()));
     });
   }
+  PopularMovieModel? search;
 
+  void getMoviesBySearch({required String text}){
+    emit(SearchMoviesLoadingState());
+    DioHelper.getData(endPoint: SEARCH,queryParameters: {
+      'api_key':API_KEY,
+      'query':text,
+    }
+    ).then((value){
+      search = PopularMovieModel.fromJson(value.data);
+      emit(SearchMoviesSuccessState());
+    }).catchError((error){
+      print(error);
+      emit(SearchMoviesErrorState(error));
+    });
+  }
 }
