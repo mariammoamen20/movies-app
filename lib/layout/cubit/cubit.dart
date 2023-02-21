@@ -121,7 +121,7 @@ class AppCubit extends Cubit<AppStates> {
       },
     ).then((value){
       categoriesModel = CategoriesModel.fromJson(value.data);
-      print('categories data -> ${value.data}');
+     // print('categories data -> ${value.data}');
       emit(MoviesCategoriesSuccessState());
     }).catchError((error){
       print(error);

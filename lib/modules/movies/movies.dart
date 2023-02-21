@@ -44,7 +44,7 @@ class MoviesScreen extends StatelessWidget {
                         return GestureDetector(
                           onTap: (){
                             print('movie index->${cubit.categoriesModel?.genres![index].id}');
-                            navigateTo(context,  FiltterScreen(id: cubit.categoriesModel?.genres![index].id ??0,));
+                            navigateTo(context,  FiltterScreen(id: cubit.categoriesModel?.genres![index].id ??0,text:cubit.categoriesModel?.genres![index].name ?? " ",));
                           },
                           child: Stack(
                             alignment: Alignment.center,
