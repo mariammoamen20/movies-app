@@ -22,9 +22,12 @@ class Results {
   Results.fromJson(dynamic json){
     adult = json['adult'];
     image = json['backdrop_path'];
-    json['genre_ids'].forEach((element) {
-      generIds?.add(element);
-    },);
+   if(json['genre_ids'] != null){
+     generIds =[];
+     json['genre_ids'].forEach((element) {
+       generIds?.add(element);
+     },);
+   }
     id = json['id'];
     title = json['title'];
     moviePoster = json['poster_path'];

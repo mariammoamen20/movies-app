@@ -9,7 +9,6 @@ import 'package:movie_app/shared/styles/colors.dart';
 import '../../shared/styles/icon_broken.dart';
 
 class HomeScreen extends StatelessWidget {
-  int movieIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -38,51 +37,22 @@ class HomeScreen extends StatelessWidget {
                     child: buildPopular(context),
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    print('new release index -> $movieIndex');
-                    navigateTo(
-                      context,
-                      MoviesDetailsScreen(
-                        title: cubit.popularMoviesModel?.results![movieIndex]
-                                .title ??
-                            " ",
-                        id: cubit.popularMoviesModel?.results![movieIndex].id ??
-                            0,
-                      ),
-                    );
-                  },
-                  child: Container(
-                    height: 200.0,
-                    decoration: BoxDecoration(
-                      color: listColor,
-                    ),
-                    child: moviesNewRelease(context),
+                Container(
+                  height: 200.0,
+                  decoration: BoxDecoration(
+                    color: listColor,
                   ),
+                  child: moviesNewRelease(context),
                 ),
                 const SizedBox(
                   height: 10.0,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    print('recommanded index -> $movieIndex');
-                    navigateTo(
-                      context,
-                      MoviesDetailsScreen(
-                        title: cubit.topRatedMoviesModel?.results![movieIndex]
-                                .title ??
-                            " ",
-                        id: cubit.topRatedMoviesModel?.results![movieIndex].id ?? 0,
-                      ),
-                    );
-                  },
-                  child: Container(
-                    height: 300,
-                    decoration: BoxDecoration(
-                      color: listColor,
-                    ),
-                    child: buildRecommendedList(context),
+                Container(
+                  height: 300,
+                  decoration: BoxDecoration(
+                    color: listColor,
                   ),
+                  child: buildRecommendedList(context),
                 ),
                 const SizedBox(
                   height: 10.0,
@@ -189,12 +159,24 @@ class HomeScreen extends StatelessWidget {
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
-                movieIndex = index;
                 return ConditionalBuilder(
                   condition: cubit.popularMoviesModel?.results != null,
-                  builder: (context) => buildMovieItem(
-                      image:
-                          'https://image.tmdb.org/t/p/original${cubit.popularMoviesModel?.results![index].moviePoster}'),
+                  builder: (context) => GestureDetector(
+                    onTap: () {
+                      navigateTo(
+                        context,
+                        MoviesDetailsScreen(
+                          title: cubit.popularMoviesModel?.results![index]
+                                  .title ??
+                              " ",
+                          id: cubit.popularMoviesModel?.results![index].id ?? 0,
+                        ),
+                      );
+                    },
+                    child: buildMovieItem(
+                        image:
+                            'https://image.tmdb.org/t/p/original${cubit.popularMoviesModel?.results![index].moviePoster}'),
+                  ),
                   fallback: (BuildContext context) {
                     return const Center(
                       child: CircularProgressIndicator(),
@@ -235,8 +217,18 @@ class HomeScreen extends StatelessWidget {
               //shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
-                movieIndex = index;
-                return buildRecommsendeItem(context, index);
+                return GestureDetector(
+                    onTap: (){
+                      navigateTo(context,MoviesDetailsScreen(
+                        title: cubit.topRatedMoviesModel?.results![index]
+                            .title ??
+                            " ",
+                        id: cubit
+                            .topRatedMoviesModel?.results![index].id ??
+                            0,
+                      ),);
+                    },
+                    child: buildRecommsendeItem(context, index));
               },
               separatorBuilder: (context, index) {
                 return const SizedBox(

@@ -34,3 +34,12 @@ class SearchMoviesErrorState extends AppStates {
 
   SearchMoviesErrorState(this.error);
 }
+class MoviesCategoriesLoadingState extends AppStates {}
+
+class MoviesCategoriesSuccessState extends AppStates {}
+
+class MoviesCategoriesErrorState extends AppStates {
+  final String error;
+
+  MoviesCategoriesErrorState(this.error);
+}

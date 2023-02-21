@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:movie_app/models/categories_model.dart';
 import 'package:movie_app/models/popular_movies_model.dart';
 import 'package:movie_app/models/top_rated_movies_model.dart';
 import 'package:movie_app/modules/home/home_screen.dart';
@@ -65,7 +66,7 @@ class AppCubit extends Cubit<AppStates> {
         'api_key': API_KEY,
       },
     ).then((value) {
-     // print('popular data ${value.data}');
+      // print('popular data ${value.data}');
       popularMoviesModel = PopularMovieModel.fromJson(value.data);
       emit(PopularMovieSuccessState());
     }).catchError((error) {
@@ -74,7 +75,8 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
- TopRatedMoviesModel? topRatedMoviesModel;
+  TopRatedMoviesModel? topRatedMoviesModel;
+
   void getTopRated() {
     emit(TopRatedLoadingState());
     DioHelper.getData(
@@ -83,7 +85,7 @@ class AppCubit extends Cubit<AppStates> {
         'api_key': API_KEY,
       },
     ).then(
-          (value) {
+      (value) {
         topRatedMoviesModel = TopRatedMoviesModel.fromJson(value.data);
         //print('top rated ${value.data}');
         emit(TopRatedSuccessState());
@@ -93,20 +95,37 @@ class AppCubit extends Cubit<AppStates> {
       emit(TopRatedErrorState(error.toString()));
     });
   }
+
   PopularMovieModel? search;
 
-  void getMoviesBySearch({required String text}){
+  void getMoviesBySearch({required String text}) {
     emit(SearchMoviesLoadingState());
-    DioHelper.getData(endPoint: SEARCH,queryParameters: {
-      'api_key':API_KEY,
-      'query':text,
-    }
-    ).then((value){
+    DioHelper.getData(endPoint: SEARCH, queryParameters: {
+      'api_key': API_KEY,
+      'query': text,
+    }).then((value) {
       search = PopularMovieModel.fromJson(value.data);
       emit(SearchMoviesSuccessState());
-    }).catchError((error){
+    }).catchError((error) {
       print(error);
       emit(SearchMoviesErrorState(error));
+    });
+  }
+  CategoriesModel? categoriesModel;
+  void getMoviesCategories() {
+    emit(MoviesCategoriesLoadingState());
+    DioHelper.getData(
+      endPoint: CATEGORIES,
+      queryParameters: {
+        'api_key': API_KEY,
+      },
+    ).then((value){
+      categoriesModel = CategoriesModel.fromJson(value.data);
+      print('categories data -> ${value.data}');
+      emit(MoviesCategoriesSuccessState());
+    }).catchError((error){
+      print(error);
+      emit(MoviesCategoriesErrorState(error));
     });
   }
 }
