@@ -26,4 +26,8 @@ samples, guidance on mobile development, and a full API reference.
 ------------------------:|:-------------------------:|:-------------------------:
 ![search](https://user-images.githubusercontent.com/76426940/219977889-ca9da0e3-cf47-413f-a6b8-f16e028dce12.jpg)|![category](https://user-images.githubusercontent.com/76426940/220614906-97f190ec-40ba-4920-aa93-aba12fea3d11.jpg)|![action](https://user-images.githubusercontent.com/76426940/220615123-735ffe27-94bb-4298-9d92-4eb7cca29bb9.jpg)
 
+|Filter Movies Screen         
+------------------------:
+![animation](https://user-images.githubusercontent.com/76426940/220615298-ca1cede3-aaab-48d7-a341-b4e09e85aaa9.jpg)
+
 
