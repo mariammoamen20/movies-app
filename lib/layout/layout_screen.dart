@@ -8,7 +8,7 @@ class LayoutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AppCubit()..getPopularMovie()..getTopRated()..getMoviesCategories(),
+      create: (context) => AppCubit()..getPopularMovie()..getTopRated()..getMoviesCategories()..getMovies(),
       child: BlocConsumer<AppCubit, AppStates>(
         listener: (context, state) {},
         builder: (context, state) {

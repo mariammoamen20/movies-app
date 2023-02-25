@@ -1,6 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app/layout/cubit/cubit.dart';
 import 'package:movie_app/modules/movie_details/cubit/cubit.dart';
 import 'package:movie_app/shared/components/components.dart';
 
@@ -16,7 +17,9 @@ class MoviesDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => MoviesDetailsCubit()..getMovieDetails(id)..getMoviesDetailsSamilir(id),
+      create: (context) => MoviesDetailsCubit()
+        ..getMovieDetails(id)
+        ..getMoviesDetailsSamilir(id),
       child: BlocConsumer<MoviesDetailsCubit, MoviesDetailsStates>(
         listener: (context, state) {},
         builder: (context, state) {
@@ -32,6 +35,7 @@ class MoviesDetailsScreen extends StatelessWidget {
               ),
             ),
             body: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -66,8 +70,10 @@ class MoviesDetailsScreen extends StatelessWidget {
                               width: 200.0,
                               height: 20.0,
                               child: ListView.separated(
-                                separatorBuilder: (context,index){
-                                  return const SizedBox(width: 3.0,);
+                                separatorBuilder: (context, index) {
+                                  return const SizedBox(
+                                    width: 3.0,
+                                  );
                                 },
                                 scrollDirection: Axis.horizontal,
                                 itemBuilder: (context, index) {
@@ -82,7 +88,7 @@ class MoviesDetailsScreen extends StatelessWidget {
                                       padding: const EdgeInsets.all(3.0),
                                       child: defaultText(
                                         text: cubit.moviesDetailsModel
-                                            ?.genres![index].name ??
+                                                ?.genres![index].name ??
                                             " ",
                                         color: Colors.white,
                                         fontSize: 8.0,
@@ -91,7 +97,9 @@ class MoviesDetailsScreen extends StatelessWidget {
                                     ),
                                   );
                                 },
-                                itemCount: cubit.moviesDetailsModel?.genres?.length ?? 0 ,
+                                itemCount:
+                                    cubit.moviesDetailsModel?.genres?.length ??
+                                        0,
                               ),
                             ),
                             SizedBox(
@@ -107,7 +115,9 @@ class MoviesDetailsScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 8.0,),
+                            const SizedBox(
+                              height: 8.0,
+                            ),
                             Row(
                               children: [
                                 const Icon(
@@ -134,8 +144,9 @@ class MoviesDetailsScreen extends StatelessWidget {
                       color: listColor,
                     ),
                     child: SizedBox(
-                        height: 200,
-                        child: buildRecommendedList(context)),
+                      height: 200,
+                      child: buildRecommendedList(context),
+                    ),
                   ),
                 ],
               ),
@@ -212,7 +223,7 @@ class MoviesDetailsScreen extends StatelessWidget {
                   width: 5.0,
                 );
               },
-              itemCount:10,
+              itemCount: MoviesDetailsCubit.get(context).moviesDetailsSaimilrModel?.results?.length ?? 0,
             ),
           )
         ],
@@ -231,19 +242,21 @@ class MoviesDetailsScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-                height: 80.0,
+                height: 200.0,
                 child: ConditionalBuilder(
-                  condition: cubit.moviesDetailsSaimilrModel?.results![index].backdropPath != null,
+                  condition: cubit.moviesDetailsSaimilrModel?.results![index]
+                          .posterPath !=
+                      null,
                   builder: (context) => buildMovieItem(
                       image:
-                      'https://image.tmdb.org/t/p/original${cubit.moviesDetailsSaimilrModel?.results![index].backdropPath}'),
+                          'https://image.tmdb.org/t/p/original${cubit.moviesDetailsSaimilrModel?.results![index].posterPath}'),
                   fallback: (BuildContext context) {
                     return const Center(child: CircularProgressIndicator());
                   },
                 )),
             Padding(
               padding:
-              const EdgeInsets.symmetric(horizontal: 8.0, vertical: 3.0),
+                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 3.0),
               child: Row(
                 children: [
                   const Icon(
@@ -253,7 +266,7 @@ class MoviesDetailsScreen extends StatelessWidget {
                   ),
                   defaultText(
                     text:
-                    '${cubit.moviesDetailsSaimilrModel?.results![index].voteAverage}',
+                        '${cubit.moviesDetailsSaimilrModel?.results![index].voteAverage}',
                     color: Colors.white,
                     fontSize: 12.0,
                     fontWeight: FontWeight.normal,
@@ -263,11 +276,13 @@ class MoviesDetailsScreen extends StatelessWidget {
             ),
             Padding(
               padding:
-              const EdgeInsets.symmetric(horizontal: 8.0, vertical: 3.0),
+                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 3.0),
               child: SizedBox(
                 width: 110.0,
                 child: defaultText(
-                  text: cubit.moviesDetailsSaimilrModel?.results![index].title ?? " ",
+                  text:
+                      cubit.moviesDetailsSaimilrModel?.results![index].title ??
+                          " ",
                   color: Colors.white,
                   fontSize: 14.0,
                   fontWeight: FontWeight.w100,
@@ -276,9 +291,11 @@ class MoviesDetailsScreen extends StatelessWidget {
             ),
             Padding(
               padding:
-              const EdgeInsets.symmetric(horizontal: 8.0, vertical: 3.0),
+                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 3.0),
               child: defaultText(
-                text:cubit.moviesDetailsSaimilrModel?.results![index].releaseDate ?? "",
+                text: cubit.moviesDetailsSaimilrModel?.results![index]
+                        .releaseDate ??
+                    "",
                 color: Colors.grey,
                 fontSize: 12.0,
                 fontWeight: FontWeight.w600,
@@ -287,6 +304,27 @@ class MoviesDetailsScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget buildMovieItem({required String image}) {
+    return Stack(
+      alignment: Alignment.topLeft,
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(5.0),
+          child: Image(
+            image: NetworkImage(
+              image,
+            ),
+            fit: BoxFit.cover,
+          ),
+        ),
+        const Icon(
+          Icons.bookmark_add_rounded,
+          color: Colors.grey,
+        ),
+      ],
     );
   }
 }

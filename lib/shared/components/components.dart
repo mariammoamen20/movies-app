@@ -35,26 +35,6 @@ Widget videoPlayerItem({required String image}) {
   );
 }
 
-Widget buildMovieItem({required String image}) {
-  return Stack(
-    alignment: Alignment.topLeft,
-    children: [
-      ClipRRect(
-        borderRadius: BorderRadius.circular(5.0),
-        child:  Image(
-          image: NetworkImage(
-            image,
-          ),
-          fit: BoxFit.cover,
-        ),
-      ),
-      const Icon(
-        Icons.bookmark_add_rounded,
-        color: Colors.grey,
-      ),
-    ],
-  );
-}
 
 Widget defaultText({
   required String text,

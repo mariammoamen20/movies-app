@@ -3,10 +3,12 @@ class TopRatedMoviesModel {
   List<TopRatedResults>? results=[];
   TopRatedMoviesModel.fromJson(Map<String,dynamic> json){
     page = json['page'];
-    json['results'].forEach((elements){
-      results?.add(TopRatedResults.fromJson(elements));
-      //print('elements $elements');
-    });
+    if( json['results'] != null){
+      json['results'].forEach((elements){
+        results?.add(TopRatedResults.fromJson(elements));
+        //print('elements $elements');
+      });
+    }
   }
 }
 
@@ -22,9 +24,12 @@ class TopRatedResults {
   TopRatedResults.fromJson(dynamic json){
     adult = json['adult'];
     image = json['backdrop_path'];
-    json['genre_ids'].forEach((element) {
-      generIds?.add(element);
-    },);
+    if( json['genre_ids'] != null){
+      json['genre_ids'].forEach((element) {
+        generIds?.add(element);
+      },);
+    }
+
     id = json['id'];
     title = json['title'];
     moviePoster = json['poster_path'];

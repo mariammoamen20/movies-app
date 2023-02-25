@@ -9,7 +9,6 @@ import 'package:movie_app/shared/styles/colors.dart';
 import '../../shared/styles/icon_broken.dart';
 
 class HomeScreen extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppStates>(
@@ -98,7 +97,7 @@ class HomeScreen extends StatelessWidget {
             width: 100.0,
             child: ConditionalBuilder(
               condition: cubit.popularMoviesModel?.results != null,
-              builder: (context) => buildMovieItem(
+              builder: (context) => buildMovieItem(0, context,
                   image:
                       'https://image.tmdb.org/t/p/original${cubit.popularMoviesModel?.results![0].moviePoster}'),
               fallback: (BuildContext context) {
@@ -166,14 +165,14 @@ class HomeScreen extends StatelessWidget {
                       navigateTo(
                         context,
                         MoviesDetailsScreen(
-                          title: cubit.popularMoviesModel?.results![index]
-                                  .title ??
-                              " ",
+                          title:
+                              cubit.popularMoviesModel?.results![index].title ??
+                                  " ",
                           id: cubit.popularMoviesModel?.results![index].id ?? 0,
                         ),
                       );
                     },
-                    child: buildMovieItem(
+                    child: buildMovieItem(index, context,
                         image:
                             'https://image.tmdb.org/t/p/original${cubit.popularMoviesModel?.results![index].moviePoster}'),
                   ),
@@ -218,15 +217,17 @@ class HomeScreen extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 return GestureDetector(
-                    onTap: (){
-                      navigateTo(context,MoviesDetailsScreen(
-                        title: cubit.topRatedMoviesModel?.results![index]
-                            .title ??
-                            " ",
-                        id: cubit
-                            .topRatedMoviesModel?.results![index].id ??
-                            0,
-                      ),);
+                    onTap: () {
+                      navigateTo(
+                        context,
+                        MoviesDetailsScreen(
+                          title: cubit
+                                  .topRatedMoviesModel?.results![index].title ??
+                              " ",
+                          id: cubit.topRatedMoviesModel?.results![index].id ??
+                              0,
+                        ),
+                      );
                     },
                     child: buildRecommsendeItem(context, index));
               },
@@ -257,7 +258,7 @@ class HomeScreen extends StatelessWidget {
                 height: 200.0,
                 child: ConditionalBuilder(
                   condition: cubit.topRatedMoviesModel?.results != null,
-                  builder: (context) => buildMovieItem(
+                  builder: (context) => buildMovieItem(index, context,
                       image:
                           'https://image.tmdb.org/t/p/original${cubit.topRatedMoviesModel?.results![index].moviePoster}'),
                   fallback: (BuildContext context) {
@@ -311,6 +312,43 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget buildMovieItem(index, context, {required String image}) {
+    var cubit = AppCubit.get(context);
+    return Stack(
+      alignment: Alignment.topLeft,
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(5.0),
+          child: Image(
+            image: NetworkImage(
+              image,
+            ),
+            fit: BoxFit.cover,
+          ),
+        ),
+        InkWell(
+          onTap: () {
+            AppCubit.get(context).addMovieToWatchlist(
+                id: cubit.popularMoviesModel?.results![0].id ?? 0,
+                image: image,
+                title: cubit.popularMoviesModel?.results![index].title ?? " ",
+                releaseDate:
+                    cubit.popularMoviesModel?.results![index].releaseDate ??
+                        " ",
+                voteRate: cubit.popularMoviesModel?.results![index].voteRate);
+            print('clickable');
+          },
+          child: Image.asset(
+            'assets/images/add.png',
+            fit: BoxFit.contain,
+            width: 30.0,
+            color:  Colors.grey[600],
+          ),
+        ),
+      ],
     );
   }
 }

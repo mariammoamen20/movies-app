@@ -3,10 +3,13 @@ class PopularMovieModel {
   List<Results>? results=[];
   PopularMovieModel.fromJson(Map<String,dynamic> json){
     page = json['page'];
-    json['results'].forEach((elements){
-      results?.add(Results.fromJson(elements));
-     // print('elements $elements');
-    });
+    if(json['results'] != null){
+      json['results'].forEach((elements){
+        results?.add(Results.fromJson(elements));
+        // print('elements $elements');
+      });
+    }
+
   }
 }
 
