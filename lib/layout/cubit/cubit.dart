@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:movie_app/models/categories_model.dart';
 import 'package:movie_app/models/popular_movies_model.dart';
-import 'package:movie_app/models/top_rated_movies_model.dart';
+import 'package:movie_app/models/top_rated_model.dart';
 import 'package:movie_app/models/watch_list_movie_model.dart';
 import 'package:movie_app/modules/home/home_screen.dart';
 import 'package:movie_app/modules/movies/movies.dart';
@@ -13,10 +13,9 @@ import 'package:movie_app/modules/watch_list/watch_list_screen.dart';
 import 'package:movie_app/shared/components/constants.dart';
 import 'package:movie_app/shared/network/remote/dio_helper.dart';
 import 'package:movie_app/shared/network/remote/end_points.dart';
-
 import '../../modules/search/search_screen.dart';
 import '../../shared/styles/icon_broken.dart';
-import 'package:firebase_database/firebase_database.dart';
+
 part 'states.dart';
 
 class AppCubit extends Cubit<AppStates> {
@@ -57,6 +56,7 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   PopularMovieModel? popularMoviesModel;
+  Map<int?, bool?> favourites = {};
 
   void getPopularMovie() {
     emit(PopularMovieLoadingState());
@@ -69,7 +69,9 @@ class AppCubit extends Cubit<AppStates> {
     ).then((value) {
       // print('popular data ${value.data}');
       popularMoviesModel = PopularMovieModel.fromJson(value.data);
+      print(favourites.toString());
       emit(PopularMovieSuccessState());
+
     }).catchError((error) {
       print(error.toString());
       emit(PopularMovieErrorState(error.toString()));
@@ -153,12 +155,14 @@ class AppCubit extends Cubit<AppStates> {
       emit(SocialCreateNewPostErrorState(error.toString()));
     });
   }*/
-  void addMovieToWatchlist(
+
+  void addMoviesToWatchlist(
       {required int id,
       required String image,
       required String title,
       required String releaseDate,
-      required dynamic voteRate}) {
+      required double voteRate,
+      required isClicked}) {
     emit(AddMovieToWatchlistLoadingState());
     WatchListMovieModel watchListMovieModel = WatchListMovieModel(
       id,
@@ -166,6 +170,7 @@ class AppCubit extends Cubit<AppStates> {
       title,
       releaseDate,
       voteRate,
+      isClicked,
     );
     FirebaseFirestore.instance
         .collection('movies')
@@ -186,9 +191,55 @@ class AppCubit extends Cubit<AppStates> {
     emit(ChangeIconWatchlistState());
   }
 
-  List<WatchListMovieModel> movies = [];
+/*
+*  List<MessageModel>? messages ;
+
+  void getMessage({required String? receiverId}) {
+    messages = [];
+    FirebaseFirestore.instance
+        .collection('users')
+                .snapshots()
+        .listen(
+      (event) {
+        event.docs.forEach(
+          (element) {
+            messages?.add(
+              MessageModel.fromJson(
+                element.data(),
+              ),
+            );
+          },
+        );
+        emit(SocialGetAllMessageSuccessState());
+      },
+    );
+  }
+* */
+  //realtime database using snapshot listen
+  List<WatchListMovieModel>? movies;
 
   void getMovies() {
+    emit(GetMoviesLoadingState());
+    FirebaseFirestore.instance.collection('movies').snapshots().listen((event) {
+      movies = [];
+      event.docs.forEach(
+        (element) {
+          movies?.add(
+            WatchListMovieModel.fromJson(
+              element.data(),
+            ),
+          );
+          print(element.data()['id']);
+        },
+      );
+      emit(AddMovieToWatchlistSuccessState());
+    });
+  }
+
+/*
+ *
+ * void getMovies() {
+    movies = [];
     emit(GetMoviesLoadingState());
     FirebaseFirestore.instance.collection('movies').get().then(
       (value) {
@@ -203,5 +254,6 @@ class AppCubit extends Cubit<AppStates> {
         emit(GetMoviesErrorState(error));
       },
     );
-  }
+  }*/
+
 }

@@ -13,46 +13,53 @@ class WatchListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AppCubit, AppStates>(
-      listener: (context, state) {
-       /* if(state is AddMovieToWatchlistSuccessState){
-          AppCubit.get(context).getMovies();
-        }*/
-      },
-      builder: (context, state) {
-        return SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              defaultText(
-                text: 'Watch List',
-                color: Colors.white,
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-              ),
-              ConditionalBuilder(
-                condition: AppCubit.get(context).movies.isNotEmpty,
-                builder:(context)=> Expanded(
-                  child: ListView.separated(
-                    physics: const BouncingScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return buildWatchlistItem(AppCubit.get(context).movies[index]);
-                    },
-                    separatorBuilder: (context, index) {
-                      return Divider(
-                        color: listColor,
-                        thickness: 1,
-                      );
-                    },
-                    itemCount: AppCubit.get(context).movies.length,
-                  ),
+    return Builder(
+      builder: (context) {
+        AppCubit.get(context).getMovies();
+        return BlocConsumer<AppCubit, AppStates>(
+          listener: (context, state) {
+          },
+          builder: (context, state) {
+            return SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    defaultText(
+                      text: 'Watch List',
+                      color: Colors.white,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    ConditionalBuilder(
+                      condition:AppCubit.get(context).movies != null ,
+                      builder:(context)=> Expanded(
+                        child: ListView.separated(
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                              return buildWatchlistItem(AppCubit.get(context).movies![index]);
+                          },
+                          separatorBuilder: (context, index) {
+                            return Divider(
+                              color: listColor,
+                              thickness: 1,
+                            );
+                          },
+                          itemCount: AppCubit.get(context).movies?.length ??0,
+                        ),
+                      ),
+                      fallback: (context)=> const Center(
+                        child: CircularProgressIndicator()
+                      ),
+                    ),
+                  ],
                 ),
-                fallback: (context)=>const Center(child: CircularProgressIndicator()),
               ),
-            ],
-          ),
+            );
+          },
         );
-      },
+      }
     );
   }
 

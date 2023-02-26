@@ -1,6 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:movie_app/layout/cubit/cubit.dart';
 import 'package:movie_app/modules/movie_details/movies_details.dart';
 import 'package:movie_app/shared/components/components.dart';
@@ -8,11 +9,29 @@ import 'package:movie_app/shared/styles/colors.dart';
 
 import '../../shared/styles/icon_broken.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if(state is AddMovieToWatchlistSuccessState){
+          Fluttertoast.showToast(
+              msg: "Movie Added Successfully",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.green,
+              textColor: Colors.white,
+              fontSize: 16.0
+          );
+        }
+      },
       builder: (context, state) {
         var cubit = AppCubit.get(context);
         return SafeArea(
@@ -331,21 +350,22 @@ class HomeScreen extends StatelessWidget {
         ),
         InkWell(
           onTap: () {
-            AppCubit.get(context).addMovieToWatchlist(
-                id: cubit.popularMoviesModel?.results![0].id ?? 0,
+            AppCubit.get(context).addMoviesToWatchlist(
+                id: cubit.popularMoviesModel?.results![index].id ?? 489,
                 image: image,
-                title: cubit.popularMoviesModel?.results![index].title ?? " ",
+                title: cubit.popularMoviesModel?.results![index].title ?? "hello ",
                 releaseDate:
                     cubit.popularMoviesModel?.results![index].releaseDate ??
-                        " ",
-                voteRate: cubit.popularMoviesModel?.results![index].voteRate);
-            print('clickable');
+                        " 2014",
+                voteRate: cubit.popularMoviesModel?.results![index].voteRate ?? 5.0,
+            isClicked: true,
+            );
           },
           child: Image.asset(
             'assets/images/add.png',
             fit: BoxFit.contain,
             width: 30.0,
-            color:  Colors.grey[600],
+            color: Colors.yellow,
           ),
         ),
       ],

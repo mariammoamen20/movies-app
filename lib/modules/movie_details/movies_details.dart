@@ -1,7 +1,6 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_app/layout/cubit/cubit.dart';
 import 'package:movie_app/modules/movie_details/cubit/cubit.dart';
 import 'package:movie_app/shared/components/components.dart';
 
@@ -320,9 +319,11 @@ class MoviesDetailsScreen extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
-        const Icon(
-          Icons.bookmark_add_rounded,
-          color: Colors.grey,
+          Image.asset(
+          'assets/images/add.png',
+          fit: BoxFit.contain,
+          width: 30.0,
+          color: Colors.yellow,
         ),
       ],
     );

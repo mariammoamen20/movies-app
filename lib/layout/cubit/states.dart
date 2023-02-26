@@ -52,9 +52,9 @@ class AddMovieToWatchlistLoadingState extends AppStates {}
 class AddMovieToWatchlistSuccessState extends AppStates {}
 
 class AddMovieToWatchlistErrorState extends AppStates {
-  final String error;
+final String error;
 
-  AddMovieToWatchlistErrorState(this.error);
+AddMovieToWatchlistErrorState(this.error);
 }
 
 class ChangeIconWatchlistState extends AppStates {}

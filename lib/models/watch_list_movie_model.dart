@@ -3,7 +3,8 @@ class WatchListMovieModel {
   String? moviePoster;
   String? title;
   String? releaseDate;
-  dynamic voteRate;
+  double? voteRate;
+  bool? isClicked;
 
   WatchListMovieModel(
     this.id,
@@ -11,6 +12,7 @@ class WatchListMovieModel {
     this.title,
     this.releaseDate,
     this.voteRate,
+   this.isClicked,
   );
 
 /*
@@ -25,6 +27,7 @@ class WatchListMovieModel {
     title = json['title'];
     releaseDate = json['releaseDate'];
     voteRate = json['voteRate'];
+    isClicked = json['isClicked'];
   }
 
   Map<String, dynamic> toMap() {
@@ -33,7 +36,8 @@ class WatchListMovieModel {
       'moviePoster': moviePoster,
       'title': title,
       'releaseDate': releaseDate,
-      'vote_average': voteRate,
+      'voteRate': voteRate,
+      'isClicked':isClicked,
     };
   }
 }
